@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model bucket {
+  id String @id @default(uuid())
+
+  name String @unique
+
+  public Boolean @default(false)
+
+  keys    key[]
+  objects object[]
+
+  createdAt DateTime @default(now())
+  alteredAt DateTime @default(now()) @updatedAt
+
+  @@map("Buckets")
+}
+
+model key {
+  id String @id @default(uuid())
+
+  jwt String @unique
+
+  bucket   bucket @relation(fields: [bucketId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  bucketId String
+
+  createdAt DateTime @default(now())
+  alteredAt DateTime @default(now()) @updatedAt
+
+  @@index([bucketId])
+  @@map("Keys")
+}
+
+model object {
+  id String @id @default(uuid())
+
+  path String @unique
+
+  bucket   bucket @relation(fields: [bucketId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  bucketId String
+
+  createdAt DateTime @default(now())
+  alteredAt DateTime @default(now()) @updatedAt
+
+  @@index([bucketId])
+  @@map("Objects")
+}
