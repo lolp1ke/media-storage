@@ -10,12 +10,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { LockIcon, MailIcon } from "lucide-react";
 
+import { useAuth } from "@/hooks/auth/useAuth";
+
 export default function page() {
+	const { signIn } = useAuth();
+
 	return (
 		<form
 			className={"flex flex-1 items-center justify-center"}
-			action={async () => {
+			action={async (formData: FormData) => {
 				"use server";
+
+				const email = formData.get("email") as string;
+				const password = formData.get("password") as string;
+				if (!email || !password) return;
+
+				await signIn({
+					email,
+					password,
+				});
 			}}>
 			<Card>
 				<CardHeader>
