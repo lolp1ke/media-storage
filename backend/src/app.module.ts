@@ -1,8 +1,9 @@
 import { Module } from "@nestjs/common";
 
-import { MediaModule } from "@/modules/media/media.module";
+import { BucketModule } from "@/modules/bucket/bucket.module";
+import { ObjectModule } from "@/modules/object/object.module";
 
 @Module({
-	imports: [MediaModule],
+	imports: [BucketModule, ObjectModule],
 })
 export class AppModule {}

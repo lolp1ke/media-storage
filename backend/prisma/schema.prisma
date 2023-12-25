@@ -43,6 +43,7 @@ model object {
   id String @id @default(uuid())
 
   path String @unique
+  type String
 
   bucket   bucket @relation(fields: [bucketId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   bucketId String
