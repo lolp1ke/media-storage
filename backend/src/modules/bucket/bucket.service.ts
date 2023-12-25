@@ -1,4 +1,10 @@
-import { ConflictException, Injectable, InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
+import {
+	ConflictException,
+	Injectable,
+	InternalServerErrorException,
+	Logger,
+	NotFoundException,
+} from "@nestjs/common";
 
 import { PrismaService } from "@/modules/prisma/prisma.service";
 
@@ -23,9 +29,10 @@ export class BucketService {
 				name: dto.name,
 			},
 		});
-		if (exist) throw new ConflictException("Bucket already exists", "Try to create new one instead");
+		if (exist)
+			throw new ConflictException("Bucket already exists", "Try to create new one instead");
 
-		await this.fileHelper.mkdir(dto.name).catch((error) => {
+		await this.fileHelper.mkdir(`/${dto.name}`).catch((error) => {
 			Logger.error(error);
 
 			throw new InternalServerErrorException("Failed to create bucket", "Folder already exists");

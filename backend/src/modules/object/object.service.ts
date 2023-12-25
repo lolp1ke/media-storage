@@ -39,6 +39,7 @@ export class ObjectService {
 		});
 		if (exist) throw new ConflictException("Object already exists", "Try to rename the object");
 
+		await this.fileHelper.mkdir(dto.path);
 		await this.fileHelper.write(dto.path, dto.name, file.buffer);
 
 		return this.prismaService.object.create({

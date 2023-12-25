@@ -7,7 +7,17 @@ import { mainConfig } from "@/config/main";
 @Injectable()
 export class FileHelper {
 	public async mkdir(_path: string) {
-		await fs.promises.mkdir(path.join(mainConfig.STORAGE_PATH, _path));
+		const splittedPath: string[] = _path.split("/");
+		let currentPath: string = "";
+		let absolutePath: string = "";
+
+		for (const folder of splittedPath) {
+			currentPath += "/" + folder;
+			absolutePath = path.join(mainConfig.STORAGE_PATH, currentPath);
+			if (folder == splittedPath[0]) continue;
+
+			if (!fs.existsSync(absolutePath)) await fs.promises.mkdir(absolutePath);
+		}
 	}
 
 	public async rm_rf(_path: string) {
@@ -18,7 +28,7 @@ export class FileHelper {
 	}
 
 	public async write(_path: string, name: string, buffer: Buffer) {
-		console.log(await fs.promises.readdir(path.join(mainConfig.STORAGE_PATH, _path)));
+		await this.mkdir(_path);
 
 		await fs.promises.writeFile(path.join(mainConfig.STORAGE_PATH, _path, name), buffer);
 	}
