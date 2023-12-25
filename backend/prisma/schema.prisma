@@ -8,6 +8,33 @@ datasource db {
   relationMode = "prisma"
 }
 
+model user {
+  id String @id @default(uuid())
+
+  email String @unique
+  hash  String @unique
+
+  sessions session[]
+
+  createdAt DateTime @default(now())
+  alteredAt DateTime @default(now()) @updatedAt
+
+  @@map("Users")
+}
+
+model session {
+  id String @id @default(uuid())
+
+  user   user   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId String
+
+  createdAt DateTime @default(now())
+  alteredAt DateTime @default(now()) @updatedAt
+
+  @@index([userId])
+  @@map("Sessions")
+}
+
 model bucket {
   id String @id @default(uuid())
 
