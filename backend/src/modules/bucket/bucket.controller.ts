@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from "@nestjs/common";
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	HttpCode,
+	HttpStatus,
+	Logger,
+	Param,
+	Post,
+} from "@nestjs/common";
 
 import { BucketService } from "./bucket.service";
 
@@ -24,5 +34,11 @@ export class BucketController {
 	@HttpCode(HttpStatus.OK)
 	public async get(@Param() dto: GetBucketDto) {
 		return this.bucketService.get(dto);
+	}
+
+	@Get("/get-all")
+	@HttpCode(HttpStatus.OK)
+	public async getAll() {
+		return this.bucketService.getAll();
 	}
 }

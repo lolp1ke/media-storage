@@ -87,4 +87,10 @@ export class BucketService {
 				return bucket;
 			});
 	}
+
+	public async getAll() {
+		return this.prismaService.bucket.findMany({}).then((res) => {
+			return res;
+		});
+	}
 }
