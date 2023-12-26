@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { LockIcon, MailIcon } from "lucide-react";
 
 import { useAuth } from "@/hooks/auth/useAuth";
+import { RedirectType, redirect } from "next/navigation";
 
 export default function page() {
 	const { signIn } = useAuth();
@@ -28,6 +29,8 @@ export default function page() {
 				await signIn({
 					email,
 					password,
+				}).then(() => {
+					redirect("/", RedirectType.push);
 				});
 			}}>
 			<Card>

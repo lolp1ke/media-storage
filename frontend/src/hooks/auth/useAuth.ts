@@ -8,7 +8,7 @@ export function useAuth() {
 	async function signIn(params: ISignIn) {
 		"use server";
 		const sessionId = await fetchApi("/auth/sign-in", {
-			method: "POST",
+			method: "post",
 			body: JSON.stringify(params),
 		}).then((response) => {
 			return response.text();
@@ -27,7 +27,7 @@ export function useAuth() {
 		const sessionId = useCookies().get("session");
 
 		await fetchApi("/auth/sign-out", {
-			method: "POST",
+			method: "post",
 			body: JSON.stringify({
 				sessionId,
 			}),
