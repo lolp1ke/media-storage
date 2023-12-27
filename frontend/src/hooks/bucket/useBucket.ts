@@ -4,7 +4,7 @@ import type { TBucket } from "./types";
 export function useBucket() {
 	async function get<T>(name?: string) {
 		return fetchApi(`/bucket/get${name ? `/${name}` : "-all"}`, {
-			method: "get",
+			method: "GET",
 		})
 			.then((response) => {
 				return response.json();
@@ -16,8 +16,9 @@ export function useBucket() {
 
 	async function create(name: string, isPublic: boolean = false) {
 		"use server";
+
 		await fetchApi("/bucket/create", {
-			method: "post",
+			method: "POST",
 			body: JSON.stringify({
 				name,
 				isPublic,
@@ -25,8 +26,20 @@ export function useBucket() {
 		});
 	}
 
+	async function remove(name: string) {
+		"use server";
+
+		await fetchApi(`/bucket/delete`, {
+			method: "DELETE",
+			body: JSON.stringify({
+				name,
+			}),
+		});
+	}
+
 	return {
 		get,
 		create,
+		remove,
 	};
 }

@@ -16,10 +16,11 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FolderTreeIcon, LayoutDashboardIcon } from "lucide-react";
+import { FolderTreeIcon, LayoutDashboardIcon, TrashIcon } from "lucide-react";
 
 export default async function page() {
 	const buckets = await useBucket().get();
+	console.log(buckets);
 
 	function showDate(date: Date) {
 		return new Date(date).toLocaleString("en-US", {
@@ -102,8 +103,8 @@ export default async function page() {
 			<section className={"flex flex-wrap gap-4 p-4"}>
 				{buckets.map((bucket) => {
 					return (
-						<Card className={"flex flex-col gap-2 items-start max-w-[300px]"} key={bucket.id}>
-							<CardHeader className={"flex flex-row gap-2 items-center"}>
+						<Card className={"flex flex-col gap-2 items-start w-[300px]"} key={bucket.id}>
+							<CardHeader className={"flex flex-row gap-2 items-center w-full"}>
 								<FolderTreeIcon />
 								<Button type={"button"} variant={"link"}>
 									<Link
@@ -114,6 +115,34 @@ export default async function page() {
 										{bucket.name}
 									</Link>
 								</Button>
+								<Dialog>
+									<DialogTrigger asChild={true}>
+										<Button type={"button"} variant={"secondary"} className={"ml-auto"}>
+											<TrashIcon />
+										</Button>
+									</DialogTrigger>
+									<DialogContent>
+										<form
+											className={"flex flex-col gap-4"}
+											action={async () => {
+												"use server";
+
+												await useBucket()
+													.remove(bucket.name)
+													.then(() => {
+														return redirect("/", RedirectType.push);
+													});
+											}}>
+											<DialogHeader>
+												<DialogTitle>Are you sure?</DialogTitle>
+												<DialogDescription>Bucket: {bucket.name}</DialogDescription>
+											</DialogHeader>
+											<DialogFooter>
+												<Button type={"submit"}>Delete</Button>
+											</DialogFooter>
+										</form>
+									</DialogContent>
+								</Dialog>
 							</CardHeader>
 							<CardFooter className={"flex flex-col gap-2 items-start"}>
 								<CardDescription>Created: {showDate(bucket.createdAt)}</CardDescription>
