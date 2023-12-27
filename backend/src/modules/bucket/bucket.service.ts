@@ -89,7 +89,7 @@ export class BucketService {
 	}
 
 	public async getAll() {
-		return this.prismaService.bucket.findMany({}).then((res) => {
+		return this.prismaService.bucket.findMany().then((res) => {
 			return res;
 		});
 	}
