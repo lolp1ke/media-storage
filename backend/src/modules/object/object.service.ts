@@ -1,11 +1,4 @@
-import {
-	ConflictException,
-	Injectable,
-	InternalServerErrorException,
-	Logger,
-	NotFoundException,
-	UnauthorizedException,
-} from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { type Response } from "express";
 
 import { PrismaService } from "@/modules/prisma/prisma.service";
@@ -24,7 +17,7 @@ export class ObjectService {
 		private readonly stringHelper: StringHelper
 	) {}
 
-	public async upload(dto: UploadObjectDto, file: Express.Multer.File) {
+	public async upload(dto: UploadObjectDto, file?: Express.Multer.File) {
 		dto.bucket = this.stringHelper.normzalizer(dto.bucket);
 
 		const bucket = await this.bucketService.get({ name: dto.bucket });

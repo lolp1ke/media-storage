@@ -27,6 +27,8 @@ export class ObjectController {
 	@HttpCode(HttpStatus.CREATED)
 	@UseInterceptors(FileInterceptor("file"))
 	public async upload(@Body() dto: UploadObjectDto, @UploadedFile() file: Express.Multer.File) {
+		console.log(dto, file);
+
 		return this.objectService.upload(dto, file);
 	}
 
